@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d0d14">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>OS — Daniel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,500&display=swap" rel="stylesheet">
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════════
+   EDIT BELOW. Save. Refresh the browser. That is the entire system.
+
+   "since" is the date the item became your problem — YYYY-MM-DD.
+   The page counts the days for you. You cannot lie to it by ignoring it.
+   ══════════════════════════════════════════════════════════════════════════ */
+
+const STATE = {
+
+  focus: "Real estate. Everything else is archived or waiting.",
+
+  // The 1–3 things for today. Keep it under three or it isn't focus.
+  today: [
+    "Register the Insider Homebuyer domain",
+    "Kill or keep the DigitalOcean VPS"
+  ],
+
+  // Things you owe yourself. Dated. They get louder on their own.
+  open: [
+    { what: "Kill or keep the DigitalOcean VPS", since: "2026-07-20" },
+    { what: "Register the Insider Homebuyer domain", since: "2026-07-28" },
+    { what: "Wire the Insider Homebuyer CRM webhook", since: "2026-07-28" },
+    { what: "Rebuild HPP FastAPI into OptimizeMMG/HPP", since: "2026-08-27" },
+    { what: "Point app.optimizemmg.com at a live origin", since: "2026-08-27" }
+  ],
+
+  // What is actually alive. Short list on purpose.
+  live: [
+    { name: "ATHB — wholesaling",      state: "running", note: "the job. the income. Follow Up Boss is the system." },
+    { name: "Insider Homebuyer",       state: "partial", note: "brand built · no domain · no CRM wiring" },
+    { name: "HPP planner",             state: "down",    note: "FastAPI lost with the disk. Make is mock. GitHub has README + vault JSX." }
+  ],
+
+  // The graveyard. Dated and permanent, so you stop re-auditing it.
+  archived: [
+    { name: "Clawd / Haifred",          on: "2026-07-20", why: "dormant since April; redundant with Claude Code" },
+    { name: "Paperclip",                on: "2026-04-14", why: "nothing on :3100 since" },
+    { name: "WAT — 30 agents",          on: "never ran",  why: "all missing description: — they have never loaded, once" },
+    { name: "OMMG consulting",          on: "no clients", why: "the pipeline page was placeholder data" },
+    { name: "Disney Concierge",         on: "2026-03-04", why: "you killed it" },
+    { name: "Discover Magic VIP",       on: "dormant",    why: "no ingest, no activity" },
+    { name: "Courtyard Roofing",        on: "dormant",    why: "no ingest, no activity" }
+  ],
+
+  // Proof you move. Add a line every time you finish something.
+  shipped: [
+    { what: "Phone OS live at optimizemmg.github.io/os", on: "2026-08-27" },
+    { what: "Live OS is OptimizeMMG/personal-os", on: "2026-08-27" },
+    { what: "Locked down computer_use.py — it was open on the LAN driving your keyboard", on: "2026-07-28" },
+    { what: "Fixed deploy.sh — ships what the server imports, probes /app", on: "2026-07-28" },
+    { what: "Staged 341 MB out of $HOME", on: "2026-07-28" },
+    { what: "Confirmed production status — 502, and nobody noticed", on: "2026-07-28" }
+  ]
+};
+
+/* ═══════════════════════ nothing below needs editing ═══════════════════════ */
+</script>
+
+<style>
+  :root{
+    --bg:#0d0d14;
+    --bg-2:#0a0a10;
+    --chrome:#12121a;
+    --line:rgba(255,255,255,0.07);
+    --ink:#f0f0f0;
+    --muted:#8a8a96;
+    --dim:#55555f;
+    --orange:#F2541B;
+    --orange-deep:#c43e12;
+    --gold:#f5c842;
+    --ok:#3DDC97;
+    --alarm:#F2541B;
+    --radius:14px;
+    --pad:20px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    min-height:100dvh;
+    color:var(--ink);
+    font-family:"DM Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    font-weight:400;
+    line-height:1.45;
+    font-size:16px;
+    background:
+      radial-gradient(900px 520px at 110% -8%, rgba(242,84,27,0.22), transparent 58%),
+      radial-gradient(700px 420px at -20% 110%, rgba(245,200,66,0.07), transparent 52%),
+      linear-gradient(180deg, var(--bg) 0%, var(--bg-2) 100%);
+    padding:calc(18px + env(safe-area-inset-top)) var(--pad) calc(32px + env(safe-area-inset-bottom));
+    max-width:540px;
+    margin:0 auto;
+  }
+  body::before{
+    content:"";
+    position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.045;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  }
+  .mast, section, footer{position:relative;z-index:1}
+
+  .mast{margin-bottom:36px}
+  .brand{
+    font-size:11px;font-weight:700;letter-spacing:0.28em;
+    text-transform:uppercase;color:var(--orange);margin-bottom:14px;
+  }
+  .mast-top{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:12px;
+  }
+  .mast h1{
+    font-weight:800;
+    font-size:clamp(32px,9vw,40px);
+    letter-spacing:-0.045em;
+    line-height:0.95;
+  }
+  .mast .date{
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-weight:600;
+    text-align:right;
+    padding-bottom:4px;
+    flex-shrink:0;
+  }
+  .focus{
+    margin-top:16px;
+    font-size:clamp(16px,4.4vw,18px);
+    font-weight:500;
+    color:var(--gold);
+    line-height:1.35;
+  }
+
+  section{margin-bottom:36px}
+  h2{
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:12px;
+  }
+  h2::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:var(--line);
+    min-width:24px;
+  }
+  h2 span{color:var(--dim);letter-spacing:0.08em;font-weight:600;flex-shrink:0}
+
+  /* ── today ────────────────────────────────────────── */
+  .today{display:flex;flex-direction:column;gap:10px}
+  .today li{
+    list-style:none;
+    font-size:clamp(18px,5vw,22px);
+    font-weight:600;
+    letter-spacing:-0.03em;
+    line-height:1.3;
+    padding:16px 16px 16px 18px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    border-left:3px solid var(--orange);
+    box-shadow:0 8px 28px rgba(0,0,0,0.25);
+  }
+  .today .none{
+    font-size:15px;font-weight:400;color:var(--muted);
+    border-left-color:var(--dim);
+    box-shadow:none;
+  }
+
+  /* ── open  (cards, not a ledger table) ────────────── */
+  .open-list{display:flex;flex-direction:column;gap:10px}
+  .open-item{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:16px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+  }
+  .open-item .what{
+    flex:1;min-width:0;
+    font-size:16px;font-weight:600;letter-spacing:-0.02em;line-height:1.3;
+  }
+  .open-item .note{
+    display:block;color:var(--muted);font-size:13px;font-weight:400;margin-top:4px;
+  }
+  .open-item .age{
+    flex-shrink:0;
+    text-align:right;
+    font-variant-numeric:tabular-nums;
+    color:var(--dim);
+    min-width:52px;
+  }
+  .open-item .age b{
+    display:block;
+    font-weight:800;
+    font-size:26px;
+    letter-spacing:-0.04em;
+    line-height:1;
+    color:var(--ink);
+  }
+  .open-item .age em{
+    display:block;
+    font-style:normal;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin-top:3px;
+  }
+  .open-item.warm{border-color:rgba(245,200,66,0.28)}
+  .open-item.warm .age b,
+  .open-item.warm .age{color:var(--gold)}
+  .open-item.hot{
+    border-color:rgba(242,84,27,0.45);
+    background:rgba(242,84,27,0.07);
+    box-shadow:0 0 28px rgba(242,84,27,0.12);
+  }
+  .open-item.hot .what{color:#fff}
+  .open-item.hot .age,
+  .open-item.hot .age b{color:var(--orange)}
+  .due{color:var(--ok);font-size:11px;font-weight:700;letter-spacing:0.06em}
+
+  /* ── live ─────────────────────────────────────────── */
+  .live{display:flex;flex-direction:column;gap:10px}
+  .live .row{
+    padding:16px;
+    background:rgba(255,255,255,0.03);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    border-left:3px solid var(--dim);
+  }
+  .live .row.running{border-left-color:var(--ok)}
+  .live .row.partial{border-left-color:var(--gold)}
+  .live .row.down{border-left-color:var(--orange)}
+  .live .hd{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px;margin-bottom:6px}
+  .live .name{font-weight:700;font-size:16px;letter-spacing:-0.02em}
+  .live .state{
+    font-size:10px;letter-spacing:0.16em;text-transform:uppercase;font-weight:700;
+    padding:3px 8px;border-radius:999px;background:rgba(255,255,255,0.05)
+  }
+  .running .state{color:var(--ok)}
+  .partial .state{color:var(--gold)}
+  .down .state{color:var(--orange)}
+  .live .note{color:var(--muted);font-size:13px}
+
+  /* ── archived ─────────────────────────────────────── */
+  .grave{display:flex;flex-direction:column;gap:12px}
+  .grave .row{color:var(--dim);font-size:14px}
+  .grave .name{
+    display:block;
+    text-decoration:line-through;
+    text-decoration-color:rgba(245,200,66,0.35);
+    text-decoration-thickness:1px;
+    color:#6a6a74;
+    font-weight:600;
+  }
+  .grave .on{
+    font-size:11px;letter-spacing:0.12em;text-transform:uppercase;
+    color:rgba(245,200,66,0.45);font-variant-numeric:tabular-nums;
+    font-weight:700;
+  }
+  .grave .why{display:block;font-size:13px;color:#4e4e56;margin-top:2px}
+
+  /* ── shipped ──────────────────────────────────────── */
+  .shipped{display:flex;flex-direction:column;gap:0}
+  .shipped .row{
+    display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;
+    padding:12px 0;border-bottom:1px solid var(--line);
+  }
+  .shipped .row:last-child{border-bottom:none}
+  .shipped .on{
+    font-size:11px;letter-spacing:0.1em;color:var(--gold);
+    font-variant-numeric:tabular-nums;font-weight:700;min-width:88px;
+  }
+  .shipped .what{flex:1;min-width:0;font-size:14px;font-weight:500}
+
+  footer{
+    margin-top:28px;padding-top:18px;border-top:1px solid var(--line);
+    color:var(--dim);font-size:12px;line-height:1.7;
+  }
+  footer code{color:var(--orange);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
+
+  @media (prefers-reduced-motion:no-preference){
+    section{animation:rise .45s ease both}
+    section:nth-of-type(2){animation-delay:.04s}
+    section:nth-of-type(3){animation-delay:.08s}
+    section:nth-of-type(4){animation-delay:.12s}
+    section:nth-of-type(5){animation-delay:.16s}
+    @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body>
+
+<div class="mast">
+  <div class="brand">Optimize</div>
+  <div class="mast-top">
+    <h1>Operating System</h1>
+    <div class="date" id="today-date"></div>
+  </div>
+  <div class="focus" id="focus"></div>
+</div>
+
+<section>
+  <h2>Today <span id="today-count"></span></h2>
+  <ul class="today" id="today"></ul>
+</section>
+
+<section>
+  <h2>Open <span id="open-count"></span></h2>
+  <div class="open-list" id="open"></div>
+</section>
+
+<section>
+  <h2>Live</h2>
+  <div class="live" id="live"></div>
+</section>
+
+<section>
+  <h2>Archived <span>closed — stop re-auditing these</span></h2>
+  <div class="grave" id="grave"></div>
+</section>
+
+<section>
+  <h2>Shipped</h2>
+  <div class="shipped" id="shipped"></div>
+</section>
+
+<footer>
+  Edit the <code>STATE</code> block at the top of this file, save, refresh.<br>
+  Ages count themselves. An item you ignore gets louder, not quieter.
+</footer>
+
+<script>
+(function(){
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const midnight = d => { const x = new Date(d); x.setHours(0,0,0,0); return x; };
+  const today = midnight(new Date());
+  const daysBetween = (a,b) => Math.round((midnight(b) - midnight(a)) / 86400000);
+
+  $('today-date').textContent = today.toLocaleDateString(undefined,
+    {weekday:'long', month:'long', day:'numeric'});
+  $('focus').textContent = STATE.focus || '';
+
+  // Today
+  const t = STATE.today || [];
+  $('today-count').textContent = t.length ? '' : '';
+  $('today').innerHTML = t.length
+    ? t.map(x => `<li>${esc(x)}</li>`).join('')
+    : `<li class="none">Nothing set. Open the list below and pick one.</li>`;
+
+  // Open — ages compute themselves
+  const open = (STATE.open || []).map(o => {
+    o._age = o.since ? daysBetween(new Date(o.since + 'T00:00:00'), today) : -1;
+    return o;
+  }).sort((a,b) => b._age - a._age);
+
+  $('open-count').textContent = open.length + (open.length === 1 ? ' item' : ' items');
+
+  $('open').innerHTML = open.map(o => {
+    let cls = '', age = '<span style="color:var(--dim)">—</span>';
+    if (o._age >= 0) {
+      age = `<b>${o._age}</b><em>day${o._age === 1 ? '' : 's'}</em>`;
+      if (o._age >= 14) cls = 'hot';
+      else if (o._age >= 5) cls = 'warm';
+    }
+    if (o.due) {
+      const left = daysBetween(today, new Date(o.due + 'T00:00:00'));
+      age += left >= 0
+        ? ` <span class="due">· ${left}d left</span>`
+        : ` <span style="color:var(--alarm)">· due</span>`;
+    }
+    return `<div class="open-item ${cls}">
+      <div class="what">${esc(o.what)}${o.note ? `<span class="note">${esc(o.note)}</span>` : ''}</div>
+      <div class="age">${age}</div>
+    </div>`;
+  }).join('');
+
+  // Live
+  $('live').innerHTML = (STATE.live || []).map(l => `
+    <div class="row ${esc(l.state)}">
+      <div class="hd">
+        <span class="name">${esc(l.name)}</span>
+        <span class="state">${esc(l.state)}</span>
+      </div>
+      ${l.note ? `<span class="note">${esc(l.note)}</span>` : ''}
+    </div>`).join('');
+
+  // Archived
+  $('grave').innerHTML = (STATE.archived || []).map(a => `
+    <div class="row">
+      <span class="name">${esc(a.name)}</span>
+      <span class="on">${esc(a.on)}</span>
+      <span class="why">${esc(a.why || '')}</span>
+    </div>`).join('');
+
+  // Shipped
+  $('shipped').innerHTML = (STATE.shipped || []).map(s => `
+    <div class="row">
+      <span class="on">${esc(s.on)}</span>
+      <span class="what">${esc(s.what)}</span>
+    </div>`).join('');
+})();
+</script>
+</body>
+</html>
